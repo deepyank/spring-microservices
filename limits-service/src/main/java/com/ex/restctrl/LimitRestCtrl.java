@@ -11,10 +11,11 @@ import com.ex.bean.LimitConfiguration;
 public class LimitRestCtrl {
 
 	@Autowired
-	private PropertiesConfiguration config;
+	PropertiesConfiguration configuration;
 
 	@GetMapping("/limits")
 	public LimitConfiguration getLimit() {
-		return new LimitConfiguration(config.getMinimum(), config.getMaximum());
+		return new LimitConfiguration(configuration.getMinimum(), configuration.getMaximum());
 	}
+
 }
