@@ -1,17 +1,17 @@
-package com.ex.limitsservice;
+package com.ex.currencyconversionservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@ComponentScan("com.ex.*")
+@EnableFeignClients("com.ex.currencyconversionservice")
 @EnableDiscoveryClient
-public class LimitsServiceApplication {
+public class CurrencyConversionServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LimitsServiceApplication.class, args);
+		SpringApplication.run(CurrencyConversionServiceApplication.class, args);
 	}
 
 }
