@@ -2,7 +2,9 @@ package com.springboot.web.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +14,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.springboot.web.model.Todo;
-import com.springboot.web.service.LoginService;
 import com.springboot.web.service.TodoService;
 
 @Controller
@@ -32,8 +34,12 @@ public class TodoController {
 	public void initBinder(WebDataBinder binder) {
 		// Date - dd/MM/yyyy
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(
-				dateFormat, false));
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+	}
+
+	@ModelAttribute("todoList")
+	public List<Todo> populateToList() {
+		return service.getTodoList();
 	}
 
 	@RequestMapping(value = "/list-todos", method = RequestMethod.GET)
@@ -45,8 +51,13 @@ public class TodoController {
 
 	@RequestMapping(value = "/add-todo", method = RequestMethod.GET)
 	public String showAddTodoPage(ModelMap model) {
-		model.addAttribute("todo", new Todo(0, (String) model.get("name"),
-				"Default Desc", new Date(), false));
+
+		/*
+		 * model.addAttribute("todo", new Todo(0, (String) model.get("name"),
+		 * "Default Desc", new Date(), false));
+		 */
+		model.addAttribute("todo", new Todo());// why it's need
+
 		return "todo";
 	}
 
@@ -64,8 +75,7 @@ public class TodoController {
 	}
 
 	@RequestMapping(value = "/update-todo", method = RequestMethod.POST)
-	public String updateTodo(ModelMap model, @Valid Todo todo,
-			BindingResult result) {
+	public String updateTodo(ModelMap model, @Valid Todo todo, BindingResult result) {
 
 		if (result.hasErrors()) {
 			return "todo";
@@ -84,9 +94,18 @@ public class TodoController {
 		if (result.hasErrors()) {
 			return "todo";
 		}
-
-		service.addTodo((String) model.get("name"), todo.getDesc(), todo.getTargetDate(),
-				false);
+		model.put("todo", todo);
+		service.addTodo((String) model.get("name"), todo.getEmail(), todo.getDesc(), todo.getTargetDate(),
+				todo.getEndDate(), todo.getName(), false);
+		return "redirect:/list-todos";
+	}
+	
+	@RequestMapping(value = "/delete-All", method = RequestMethod.GET)
+	public String deleteTodoList(HttpServletRequest request) {
+		String[] selectedItems = request.getParameterValues("selectedItems");
+		for (String selectedItem : selectedItems) {
+			service.deleteTodo(Integer.valueOf(selectedItem));
+		}
 		return "redirect:/list-todos";
 	}
 }

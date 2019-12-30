@@ -10,10 +10,22 @@
 
 <body>
 	<div class="container">
-
-
+		<jsp:include page="headar.jsp"></jsp:include>
 		<form:form method="post" commandName="todo">
 			<form:hidden path="id" />
+			<fieldset class="form-group">
+				<form:label path="name">Name</form:label>
+				<form:input path="name" type="text" class="form-control"
+					required="required" />
+				<form:errors path="name" cssClass="text-warning" />
+			</fieldset>
+			<fieldset class="form-group">
+				<form:label path="email">Email Id</form:label>
+				<form:input path="email" type="text" class="form-control"
+					required="required" />
+				<form:errors path="email" cssClass="text-warning" />
+			</fieldset>
+
 			<fieldset class="form-group">
 				<form:label path="desc">Description</form:label>
 				<form:input path="desc" type="text" class="form-control"
@@ -22,13 +34,21 @@
 			</fieldset>
 
 			<fieldset class="form-group">
-				<form:label path="targetDate">Target Date</form:label>
+				<form:label path="targetDate">Start Date</form:label>
 				<form:input path="targetDate" type="text" class="form-control"
 					required="required" />
 				<form:errors path="targetDate" cssClass="text-warning" />
 			</fieldset>
 
+			<fieldset class="form-group">
+				<form:label path="endDate">End Date</form:label>
+				<form:input path="endDate" type="text" class="form-control"
+					required="required" />
+				<form:errors path="endDate" cssClass="text-warning" />
+			</fieldset>
 			<button type="submit" class="btn btn-danger">Add</button>
+			<a type="button" class="btn btn-success"
+							href="/list-todos">Cancel</a>
 		</form:form>
 	</div>
 
@@ -38,6 +58,10 @@
 		src="webjars/bootstrap-datepicker/1.0.1/js/bootstrap-datepicker.js"></script>
 	<script>
 		$('#targetDate').datepicker({
+			format : 'dd/mm/yyyy'
+		});
+
+		$('#endDate').datepicker({
 			format : 'dd/mm/yyyy'
 		});
 	</script>
