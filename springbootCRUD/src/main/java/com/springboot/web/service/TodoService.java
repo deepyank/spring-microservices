@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.web.model.Todo;
@@ -23,8 +26,10 @@ public class TodoService {
 	public List<Todo> getTodoList() {
 		return todos;
 	}
-
+	
+	@Cacheable(value = "todos")
 	public List<Todo> retrieveTodos(String user) {
+		System.out.println("cache is callled");
 		List<Todo> filteredTodos = new ArrayList<Todo>();
 		for (Todo todo : todos) {
 			if (todo.getUser().equalsIgnoreCase(user)) {
@@ -33,7 +38,8 @@ public class TodoService {
 		}
 		return filteredTodos;
 	}
-
+	
+	@Cacheable(value = "todos",key = "#id")
 	public Todo retrieveTodo(int id) {
 		for (Todo todo : todos) {
 			if (todo.getId() == id) {
@@ -42,16 +48,19 @@ public class TodoService {
 		}
 		return null;
 	}
-
+	
+	@CachePut(value = "todos",key ="#p0")
 	public void updateTodo(Todo todo) {
 		todos.remove(todo);
 		todos.add(todo);
 	}
 
+	@Cacheable(value = "todos",key = "#id")
 	public void addTodo(String user, String email,String desc, Date targetDate,Date endDate,String name, boolean isDone) {
 		 todos.add(new Todo(++todoCount, user, desc, targetDate,email,name,endDate ,isDone));
 	}
 
+	@CacheEvict(cacheNames ="todos",allEntries = true)
 	public void deleteTodo(int id) {
 		Iterator<Todo> iterator = todos.iterator();
 		while (iterator.hasNext()) {

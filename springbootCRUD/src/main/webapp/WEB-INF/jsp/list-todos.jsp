@@ -6,6 +6,9 @@
 
 <head>
 <title>Todo's for ${name}</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	function checkAll(master) {
 		var checked = master.checked;
@@ -38,7 +41,8 @@
 						<th>End date</th>
 						<th>Is it Done?</th>
 						<th></th>
-						<th></th>
+						<th><button type="submit" class="btn btn-primary"
+			name="operation" value="Delete">Delete All</button></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,9 +68,6 @@
 			</table>
 			<div>
 				<a class="button" href="/add-todo">Add a Todo</a>
-				<button type="submit" class="btn btn-primary pull-right"
-			name="operation" value="Delete">Delete</button>
-				</td>
 			</div>
 		</div>
 	</sf:form>
