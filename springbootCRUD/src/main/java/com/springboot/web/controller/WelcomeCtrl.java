@@ -12,4 +12,9 @@ public class WelcomeCtrl {
 	public String showLoginPage(ModelMap model){
 		return "app";
 	}
+	
+	@RequestMapping(value="/home", method = RequestMethod.GET)
+	public String homePage(ModelMap model){
+		return "welcome";
+	}
 }

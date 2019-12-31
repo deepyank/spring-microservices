@@ -100,11 +100,12 @@ public class TodoController {
 		return "redirect:/list-todos";
 	}
 	
-	@RequestMapping(value = "/delete-All", method = RequestMethod.GET)
-	public String deleteTodoList(HttpServletRequest request) {
-		String[] selectedItems = request.getParameterValues("selectedItems");
-		for (String selectedItem : selectedItems) {
-			service.deleteTodo(Integer.valueOf(selectedItem));
+	@RequestMapping(method = RequestMethod.POST)
+	public String deleteTodoList(@ModelAttribute ("todos") Todo todos) {
+		if (todos.getIds() != null) {
+			for (Integer id : todos.getIds()) {
+				service.deleteTodo(id);
+			}
 		}
 		return "redirect:/list-todos";
 	}

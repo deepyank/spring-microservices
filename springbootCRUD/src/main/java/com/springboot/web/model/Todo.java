@@ -16,7 +16,7 @@ public class Todo {
 	private String name;
 	private Date endDate;
 	private boolean isDone;
-
+	private Integer[] ids;
 	public Todo() {
 		super();
 	}
@@ -34,6 +34,13 @@ public class Todo {
 		this.isDone = isDone;
 	}
 
+	public Integer[] getIds() {
+		return ids;
+	}
+
+	public void setIds(Integer[] ids) {
+		this.ids = ids;
+	}
 	public int getId() {
 		return id;
 	}
